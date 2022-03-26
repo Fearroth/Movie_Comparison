@@ -1,6 +1,6 @@
 const root = document.querySelector('.autocomplete');
 root.innerHTML = ` 
-	<label><b>Search for movie</b></label>
+	<label><b>Search for a movie</b></label>
 	<input class="input" />
 	<div class="dropdown">
 		<div class="dropdown-menu"> 
