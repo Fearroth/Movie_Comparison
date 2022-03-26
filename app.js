@@ -1,6 +1,6 @@
 const root = document.querySelector('.autocomplete');
 root.innerHTML = ` 
-	<label><b>search for movie</b></label>
+	<label><b>Search for movie</b></label>
 	<input class="input" />
 	<div class="dropdown">
 		<div class="dropdown-menu"> 
@@ -10,20 +10,8 @@ root.innerHTML = `
 	</div>
 `;
 const input1 = document.querySelector('.input');
-
 const dropdown = document.querySelector('.dropdown');
 const resultsWrapper = document.querySelector('.results');
-const debounce = (func) => {
-	let timeoutID;
-	return (...args) => {
-		if (timeoutID) {
-			clearTimeout(timeoutID);
-		}
-		timeoutID = setTimeout(() => {
-			func.apply(null, args);
-		}, 1000);
-	};
-};
 
 const fetchData = async (input) => {
 	const response = await axios.get('http://www.omdbapi.com/', {
@@ -42,13 +30,14 @@ const onInput = async (event) => {
 	//console.log(movies);
 	resultsWrapper.innerHTML = '';
 	for (let movie of movies) {
-		const div = document.createElement('div');
+		const listRow = document.createElement('a');
+		listRow.classList.add('dropdown-item');
 		const moviePoster = movie.Poster === 'N/A' ? '' : movie.Poster;
-		div.innerHTML = `
+		listRow.innerHTML = `
 		<img src="${moviePoster}" />
-		<h1>${movie.Title}</h1>
+		${movie.Title}
 		`;
-		resultsWrapper.appendChild(div);
+		resultsWrapper.appendChild(listRow);
 	}
 };
 
