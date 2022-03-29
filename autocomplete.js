@@ -1,5 +1,4 @@
-const createAutoComplete = (config) => {
-	const root = document.querySelector('.autocomplete');
+const createAutoComplete = ({ root }) => {
 	root.innerHTML = ` 
 	<label><b>Search for a movie</b></label>
 	<input class="input" />
@@ -10,9 +9,9 @@ const createAutoComplete = (config) => {
 		</div>
 	</div>
 `;
-	const input = document.querySelector('.input');
-	const dropdown = document.querySelector('.dropdown');
-	const resultsWrapper = document.querySelector('.results');
+	const input = root.querySelector('.input');
+	const dropdown = root.querySelector('.dropdown');
+	const resultsWrapper = root.querySelector('.results');
 
 	const onInput = async (event) => {
 		const movies = await fetchData(event.target.value);
@@ -47,14 +46,5 @@ const createAutoComplete = (config) => {
 		}
 	});
 
-	const onMovieSelect = async (movie) => {
-		const response = await axios.get('http://www.omdbapi.com/', {
-			params: {
-				apikey: 'efd25046',
-				i: movie.imdbID
-			}
-		});
-		console.log(response.data);
-		document.querySelector('#summary').innerHTML = movieTemplate(response.data);
-	};
+	input.addEventListener('input', debounce(onInput));
 };
