@@ -1,22 +1,28 @@
-const fetchData = async (input) => {
-	const response = await axios.get('http://www.omdbapi.com/', {
-		params: {
-			apikey: 'efd25046',
-			s: input
-		}
-	});
-	if (response.data.Error) return [];
-	return response.data.Search;
-};
-
 createAutoComplete({
-	root: document.querySelector('.autocomplete')
-});
-createAutoComplete({
-	root: document.querySelector('.autocomplete2')
-});
-createAutoComplete({
-	root: document.querySelector('.autocomplete3')
+	root: document.querySelector('.autocomplete'),
+	renderOption(movie) {
+		const moviePoster = movie.Poster === 'N/A' ? '' : movie.Poster;
+		return `
+		<img src="${moviePoster}" />
+		${movie.Title}
+		`;
+	},
+	onOptionSelect(movie) {
+		onMovieSelect(movie);
+	},
+	inputValue(movie) {
+		return movie.Title;
+	},
+	async fetchData(searchTerm) {
+		const response = await axios.get('http://www.omdbapi.com/', {
+			params: {
+				apikey: 'efd25046',
+				s: searchTerm
+			}
+		});
+		if (response.data.Error) return [];
+		return response.data.Search;
+	}
 });
 
 const movieTemplate = (movieDetail) => {
